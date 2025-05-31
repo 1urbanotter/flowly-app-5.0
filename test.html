@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flowly: Streamlined Brand & Design System</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* --- CSS Variables for Flowly's Brand Colors (from tailwind.config.js) --- */
+      :root {
+        /* Primary (Teal/Green) */
+        --color-primary-light: #a5f2d5;
+        --color-primary-default: #5deac7;
+        --color-primary-dark: #13ab99;
+
+        /* Secondary (Blue/Indigo) */
+        --color-secondary-light: #81b7ff;
+        --color-secondary-default: #25339f;
+        --color-secondary-dark: #1c2462;
+
+        /* Background */
+        --color-background-light: #ebebeb;
+        --color-background-base: #e0e0e1;
+        --color-background-dark: #23242c;
+        --color-background-darker: #141315;
+
+        /* Text */
+        --color-text-light: #23242c; /* Dark text on light background */
+        --color-text-base: #141315; /* Even darker text on light background */
+        --color-text-dark: #ebebeb; /* Light text on dark background */
+        --color-text-darker: #e0e0e1; /* Even lighter text on dark background */
+
+        /* Status */
+        --color-success: #7dc149;
+        --color-danger: #eeb758;
+        --color-warning: #e7364e;
+
+        /* Font Families */
+        --font-family-sans: "Quicksand", sans-serif;
+        --font-family-mono: "Space Mono", monospace;
+      }
+
+      /* --- Base & Global Styles --- */
+      html {
+        scroll-behavior: smooth; /* Smooth scrolling for navigation */
+      }
+      body {
+        font-family: var(--font-family-sans);
+        background-color: var(--color-background-light);
+        color: var(--color-text-light); /* Default text for light theme */
+        transition: background-color 0.6s ease-in-out, color 0.6s ease-in-out;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden; /* Prevent horizontal scroll */
+      }
+
+      /* Dark Mode Styles */
+      html.dark body {
+        background-color: var(--color-background-darker);
+        color: var(--color-text-dark); /* Default text for dark theme */
+      }
+
+      /* --- Typography --- */
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      .mono-text,
+      button,
+      input,
+      select,
+      textarea {
+        /* Apply mono font to form elements as well */
+        font-family: var(--font-family-mono);
+        color: var(--color-text-light); /* Default for headers in light mode */
+        transition: color 0.6s ease-in-out;
+      }
+
+      html.dark h1,
+      html.dark h2,
+      html.dark h3,
+      html.dark h4,
+      html.dark h5,
+      html.dark h6,
+      html.dark .mono-text,
+      html.dark button,
+      html.dark input,
+      html.dark select,
+      html.dark textarea {
+        color: var(--color-text-dark); /* Default for headers in dark mode */
+      }
+
+      h1 {
+        font-size: 3.8em;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 0.2em;
+        color: var(--color-primary-default);
+      }
+      h2 {
+        font-size: 2.8em;
+        font-weight: 700;
+        line-height: 1.3;
+        margin-bottom: 0.4em;
+        color: var(--color-primary-default);
+      }
+      h3 {
+        font-size: 2.2em;
+        font-weight: 700;
+        line-height: 1.4;
+        margin-bottom: 0.6em;
+        color: var(--color-secondary-default);
+      }
+      h4 {
+        font-size: 1.6em;
+        font-weight: 700;
+        line-height: 1.5;
+        margin-bottom: 0.8em;
+      }
+      p {
+        font-size: 1.1em;
+        font-weight: 400;
+        color: var(--color-text-light);
+        transition: color 0.6s ease-in-out;
+      }
+      html.dark p {
+        color: var(--color-text-dark);
+      }
+
+      .mono-numbers {
+        font-family: var(--font-family-mono);
+        font-size: 1.8em;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        color: var(--color-primary-dark);
+      }
+      html.dark .mono-numbers {
+        color: var(--color-primary-light);
+      }
+
+      /* --- Layout & Sections --- */
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 60px;
+      }
+      @media (max-width: 768px) {
+        .container {
+          padding: 20px;
+          gap: 40px;
+        }
+        h1 {
+          font-size: 2.5em;
+        }
+        h2 {
+          font-size: 2em;
+        }
+        h3 {
+          font-size: 1.6em;
+        }
+      }
+
+      .section {
+        padding: 40px;
+        border-radius: 20px; /* Smoother edges */
+        position: relative;
+        z-index: 1; /* For glassmorphism layering */
+        transition: background-color 0.6s ease-in-out,
+          box-shadow 0.6s ease-in-out, border-color 0.6s ease-in-out;
+      }
+
+      /* Glassmorphism Effect for Sections */
+      .glassmorphic-panel {
+        background-color: rgba(
+          255,
+          255,
+          255,
+          0.05
+        ); /* Light glass effect base */
+        backdrop-filter: blur(15px); /* Stronger blur for dimensional effect */
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border for definition */
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1); /* Dimensional shadow */
+      }
+      html.dark .glassmorphic-panel {
+        background-color: rgba(0, 0, 0, 0.1); /* Dark glass effect base */
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+      }
+
+      /* --- Theme Toggle --- */
+      .theme-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: var(--color-background-base);
+        border: none;
+        border-radius: 50%;
+        width: 55px;
+        height: 55px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        transition: background-color 0.6s ease-in-out,
+          box-shadow 0.6s ease-in-out;
+        z-index: 1000;
+      }
+      html.dark .theme-toggle {
+        background-color: var(--color-background-dark);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      }
+      .theme-toggle svg {
+        width: 28px;
+        height: 28px;
+        fill: var(--color-text-light); /* Icon color in light mode */
+        transition: fill 0.6s ease-in-out;
+      }
+      html.dark .theme-toggle svg {
+        fill: var(--color-text-dark); /* Icon color in dark mode */
+      }
+
+      /* --- Brand Elements --- */
+      .logo-display {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+      .logo-display img,
+      .logo-display svg {
+        width: 250px; /* Bigger logo */
+        height: auto;
+        display: block;
+        margin: 0 auto;
+        transition: transform 0.3s ease-in-out;
+      }
+      .logo-display img:hover,
+      .logo-display svg:hover {
+        transform: scale(1.05);
+      }
+
+      /* --- Color Palette --- */
+      .color-swatch-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 25px;
+        margin-top: 30px;
+      }
+      .color-swatch {
+        border-radius: 12px; /* Smoother edges */
+        padding: 25px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        min-height: 140px;
+        font-size: 0.9em;
+        font-family: var(--font-family-mono); /* Mono for hex codes */
+        color: white; /* Default for readability on most swatches */
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+        border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border for glassmorphism */
+      }
+      .color-swatch:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      }
+      .color-swatch.light-text {
+        color: var(--color-text-light);
+        text-shadow: none;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+      }
+      /* Specific Color Swatch Backgrounds */
+      .bg-primary-light {
+        background-color: var(--color-primary-light);
+      }
+      .bg-primary-default {
+        background-color: var(--color-primary-default);
+      }
+      .bg-primary-dark {
+        background-color: var(--color-primary-dark);
+      }
+      .bg-secondary-light {
+        background-color: var(--color-secondary-light);
+      }
+      .bg-secondary-default {
+        background-color: var(--color-secondary-default);
+      }
+      .bg-secondary-dark {
+        background-color: var(--color-secondary-dark);
+      }
+      .bg-background-light {
+        background-color: var(--color-background-light);
+      }
+      .bg-background-base {
+        background-color: var(--color-background-base);
+      }
+      .bg-background-dark {
+        background-color: var(--color-background-dark);
+      }
+      .bg-background-darker {
+        background-color: var(--color-background-darker);
+      }
+      .bg-text-light {
+        background-color: var(--color-text-light);
+      }
+      .bg-text-base {
+        background-color: var(--color-text-base);
+      }
+      .bg-text-dark {
+        background-color: var(--color-text-dark);
+      }
+      .bg-text-darker {
+        background-color: var(--color-text-darker);
+      }
+      .bg-success {
+        background-color: var(--color-success);
+      }
+      .bg-danger {
+        background-color: var(--color-danger);
+      }
+      .bg-warning {
+        background-color: var(--color-warning);
+      }
+
+      /* --- UI Components --- */
+      .component-showcase {
+        margin-bottom: 40px;
+      }
+      .component-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+        margin-top: 30px;
+      }
+
+      /* Buttons */
+      .btn {
+        font-family: var(--font-family-mono);
+        padding: 15px 30px; /* Bigger buttons */
+        border-radius: 12px; /* Smoother edges */
+        border: none;
+        cursor: pointer;
+        font-size: 1.1em; /* Bigger text */
+        font-weight: 700;
+        transition: background-color 0.3s ease, color 0.3s ease,
+          box-shadow 0.3s ease, transform 0.2s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Dimensional shadow */
+      }
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      }
+      .btn:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      .btn-primary {
+        background-color: var(--color-primary-default);
+        color: var(--color-text-light); /* Dark text on primary button */
+      }
+      .btn-primary:hover {
+        background-color: var(--color-primary-dark);
+      }
+      html.dark .btn-primary {
+        background-color: var(--color-primary-dark);
+        color: var(
+          --color-text-dark
+        ); /* Light text on primary button in dark mode */
+      }
+      html.dark .btn-primary:hover {
+        background-color: var(--color-primary-default);
+      }
+
+      .btn-secondary {
+        background-color: var(--color-secondary-light);
+        color: var(--color-secondary-dark); /* Dark text on secondary button */
+      }
+      .btn-secondary:hover {
+        background-color: var(--color-secondary-default);
+      }
+      html.dark .btn-secondary {
+        background-color: var(--color-secondary-dark);
+        color: var(
+          --color-secondary-light
+        ); /* Light text on secondary button in dark mode */
+      }
+      html.dark .btn-secondary:hover {
+        background-color: var(--color-secondary-default);
+      }
+
+      .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: none;
+      }
+
+      /* Form Elements */
+      .input-field {
+        padding: 12px 18px;
+        border-radius: 10px; /* Smoother edges */
+        border: 2px solid var(--color-background-base); /* Bolder lines */
+        background-color: var(--color-background-light);
+        color: var(--color-text-light);
+        font-family: var(--font-family-sans);
+        font-size: 1.05em;
+        width: 100%;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease, background-color 0.3s ease,
+          box-shadow 0.3s ease;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05); /* Subtle inset shadow */
+      }
+      html.dark .input-field {
+        border-color: var(--color-background-dark);
+        background-color: var(--color-background-dark);
+        color: var(--color-text-dark);
+        box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.05);
+      }
+      .input-field:focus {
+        outline: none;
+        border-color: var(--color-primary-default);
+        box-shadow: 0 0 0 3px rgba(93, 234, 199, 0.3),
+          inset 0 1px 3px rgba(0, 0, 0, 0.05);
+      }
+      html.dark .input-field:focus {
+        box-shadow: 0 0 0 3px rgba(165, 242, 213, 0.3),
+          inset 0 1px 3px rgba(255, 255, 255, 0.05);
+      }
+
+      /* Cards - Glassmorphic */
+      .card {
+        background-color: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 15px; /* Smoother edges */
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* More dimensional shadow */
+        transition: all 0.3s ease-in-out;
+      }
+      .card:hover {
+        transform: translateY(-5px) scale(1.01);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+      }
+      html.dark .card {
+        background-color: rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      }
+      html.dark .card:hover {
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.55);
+      }
+
+      /* Icons */
+      .icon-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+        margin-top: 30px;
+        justify-content: center;
+      }
+      .icon-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.9em;
+        color: var(--color-text-light);
+        font-family: var(--font-family-sans);
+        transition: color 0.6s ease-in-out;
+      }
+      html.dark .icon-box {
+        color: var(--color-text-dark);
+      }
+      .icon-box svg {
+        width: 50px; /* Bigger icons */
+        height: 50px;
+        fill: currentColor; /* Use current text color for SVG */
+        transition: fill 0.6s ease-in-out, transform 0.2s ease-in-out;
+      }
+      .icon-box:hover svg {
+        transform: scale(1.1);
+        fill: var(--color-primary-default);
+      }
+      html.dark .icon-box:hover svg {
+        fill: var(--color-primary-light);
+      }
+
+      /* Imagery */
+      .image-gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+        margin-top: 30px;
+      }
+      .image-item img {
+        width: 100%;
+        height: 250px; /* Consistent height */
+        object-fit: cover;
+        border-radius: 15px; /* Smoother edges */
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Dimensional shadow */
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      }
+      .image-item img:hover {
+        transform: scale(1.02);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+      }
+      html.dark .image-item img {
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+      }
+      html.dark .image-item img:hover {
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.6);
+      }
+
+      /* Helper for text contrast on specific colors */
+      .on-dark-bg-text {
+        color: white;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+      }
+      .on-light-bg-text {
+        color: black;
+        text-shadow: none;
+      }
+
+      /* General element transitions for smoother feel */
+      * {
+        box-sizing: border-box;
+      }
+      body,
+      button,
+      input,
+      select,
+      textarea,
+      .section,
+      .card {
+        transition: all 0.4s ease-in-out;
+      }
+
+      /* Custom Scrollbar (from previous index.css) */
+      ::-webkit-scrollbar {
+        width: 12px;
+        height: 12px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--color-background-base);
+        border-radius: 10px;
+      }
+      html.dark ::-webkit-scrollbar-track {
+        background: var(--color-background-darker);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--color-primary-default);
+        border-radius: 10px;
+        border: 3px solid var(--color-background-base);
+      }
+      html.dark ::-webkit-scrollbar-thumb {
+        background: var(--color-primary-dark);
+        border: 3px solid var(--color-background-darker);
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--color-primary-dark);
+      }
+      html.dark ::-webkit-scrollbar-thumb:hover {
+        background: var(--color-primary-default);
+      }
+    </style>
+  </head>
+  <body>
+    <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+      <svg
+        class="moon-icon"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+      <svg
+        class="sun-icon hidden"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </button>
+
+    <div class="container">
+      <header
+        style="text-align: center; margin-bottom: 40px; padding-top: 40px"
+      >
+        <h1>Flowly</h1>
+        <p style="max-width: 800px; margin: 20px auto 0; font-size: 1.3em">
+          Crafting intuitive digital experiences with a streamlined aesthetic.
+          Our brand system reflects fluidity, clarity, and modern elegance.
+        </p>
+      </header>
+
+      <section class="section glassmorphic-panel">
+        <h2 style="text-align: center; margin-bottom: 40px">Brand Identity</h2>
+
+        <div class="component-showcase">
+          <h3 style="text-align: center; margin-bottom: 20px">
+            The Flowly Mark
+          </h3>
+          <p style="text-align: center; max-width: 600px; margin: 0 auto 30px">
+            Our logo embodies fluid motion and connectivity, forming a subtle
+            'F' that hints at efficiency and effortless interaction. It's
+            dynamic, memorable, and unique to Flowly's vision.
+          </p>
+          <div class="logo-display">
+            <img
+              src="https://via.placeholder.com/250x150?text=Flowly+Logo"
+              alt="Flowly Logo - Two fluid shapes forming an F"
+            />
+          </div>
+        </div>
+
+        <div class="component-showcase">
+          <h3 style="text-align: center; margin-bottom: 20px">
+            Core Color Palette: Accessibility & Emotion
+          </h3>
+          <p style="text-align: center; max-width: 700px; margin: 0 auto 30px">
+            Our palette is chosen for clarity, vibrancy, and accessibility.
+            Primary colors guide attention, while secondary tones add depth and
+            user delight. Careful contrast ensures readability across light and
+            dark modes.
+          </p>
+          <div class="color-swatch-grid">
+            <div class="color-swatch bg-primary-light on-light-bg-text">
+              Primary Light<br />#A5F2D5
+            </div>
+            <div class="color-swatch bg-primary-default on-light-bg-text">
+              Primary Default<br />#5DEAC7
+            </div>
+            <div class="color-swatch bg-primary-dark on-dark-bg-text">
+              Primary Dark<br />#13AB99
+            </div>
+
+            <div class="color-swatch bg-secondary-light on-light-bg-text">
+              Secondary Light<br />#81B7FF
+            </div>
+            <div class="color-swatch bg-secondary-default on-dark-bg-text">
+              Secondary Default<br />#25339F
+            </div>
+            <div class="color-swatch bg-secondary-dark on-dark-bg-text">
+              Secondary Dark<br />#1C2462
+            </div>
+
+            <div class="color-swatch bg-background-light on-light-bg-text">
+              Background Light<br />#EBEBEB
+            </div>
+            <div class="color-swatch bg-background-base on-light-bg-text">
+              Background Base<br />#E0E0E1
+            </div>
+            <div class="color-swatch bg-background-dark on-dark-bg-text">
+              Background Dark<br />#23242C
+            </div>
+            <div class="color-swatch bg-background-darker on-dark-bg-text">
+              Background Darker<br />#141315
+            </div>
+
+            <div class="color-swatch bg-text-light on-light-bg-text">
+              Text Light<br />#23242C
+            </div>
+            <div class="color-swatch bg-text-base on-light-bg-text">
+              Text Base<br />#141315
+            </div>
+            <div class="color-swatch bg-text-dark on-dark-bg-text">
+              Text Dark<br />#EBEBEB
+            </div>
+            <div class="color-swatch bg-text-darker on-dark-bg-text">
+              Text Darker<br />#E0E0E1
+            </div>
+
+            <div class="color-swatch bg-success on-light-bg-text">
+              Success<br />#7DC149
+            </div>
+            <div class="color-swatch bg-danger on-dark-bg-text">
+              Danger<br />#EEB758
+            </div>
+            <div class="color-swatch bg-warning on-dark-bg-text">
+              Warning<br />#E7364E
+            </div>
+          </div>
+        </div>
+
+        <div class="component-showcase">
+          <h3 style="text-align: center; margin-bottom: 20px">
+            Typography: Clarity in Flow
+          </h3>
+          <p style="text-align: center; max-width: 700px; margin: 0 auto 30px">
+            **Quicksand** offers a friendly, modern sans-serif for body text,
+            ensuring effortless readability. **Space Mono** provides a
+            distinctive, scientific feel for headers, buttons, and data, adding
+            emphasis and structure.
+          </p>
+          <div class="glassmorphic-panel" style="padding: 40px">
+            <h1>Heading 1 - The Ultimate Flow Experience</h1>
+            <p>
+              This is a foundational paragraph, articulating the core values and
+              mission of Flowly. Our commitment to user experience dictates a
+              sans-serif typeface, optimized for clarity and ease of reading on
+              any device.
+            </p>
+            <h2>Heading 2 - Streamlined Processes & Automation</h2>
+            <p class="mono-numbers">123.456.789 Flow Units</p>
+            <p>
+              Numbers and critical data points utilize a monospace font for
+              precise alignment and a technical, yet approachable, aesthetic.
+              This ensures data integrity is visually reinforced.
+            </p>
+            <h3>Heading 3 - Intuitive Interactions at Your Fingertips</h3>
+            <p>
+              Buttons and call-to-action elements are designed with larger tap
+              targets and clear, concise labels. Their monospace typography
+              provides a consistent, actionable visual cue.
+            </p>
+            <button class="btn btn-primary" style="margin-right: 15px">
+              Get Started Now
+            </button>
+            <button class="btn btn-secondary">Learn More</button>
+            <h4>Heading 4 - Building Connections, Seamlessly</h4>
+            <p>
+              For more detailed information, sub-sections, and explanatory text,
+              the body font maintains its comfortable legibility, guiding the
+              user through complex ideas with ease.
+            </p>
+            <p>
+              The quick brown fox jumps over the lazy dog, demonstrating both
+              uppercase and lowercase legibility, as well as character spacing.
+              <span class="mono-text">FLOWLY_UX_GUIDE_V2.0</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section glassmorphic-panel">
+        <h2 style="text-align: center; margin-bottom: 40px">
+          UI/UX Design System
+        </h2>
+        <p
+          style="
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            font-size: 1.1em;
+          "
+        >
+          Our UI components are designed for clarity, responsiveness, and
+          delightful interaction. Emphasis on glassmorphism, bold lines, and
+          smooth transitions creates a premium, intuitive feel.
+        </p>
+
+        <div class="component-showcase">
+          <h3 style="text-align: center; margin-bottom: 20px">
+            Actionable Buttons
+          </h3>
+          <p style="text-align: center; max-width: 700px; margin: 0 auto 30px">
+            Bigger buttons ensure high tap accuracy and visibility. Smooth edges
+            and dimensional shadows provide a modern, tactile feel, encouraging
+            engagement.
+          </p>
+          <div
+            style="
+              display: flex;
+              gap: 20px;
+              flex-wrap: wrap;
+              justify-content: center;
+            "
+          >
+            <button class="btn btn-primary">Submit Data</button>
+            <button class="btn btn-secondary">View Details</button>
+            <button class="btn btn-primary" disabled>Processing...</button>
+          </div>
+        </div>
+
+        <div class="component-showcase">
+          <h3 style="text-align: center; margin-bottom: 20px">
+            Intuitive Form Elements
+          </h3>
+          <p style="text-align: center; max-width: 700px; margin: 0 auto 30px">
+            Clear, well-defined input fields with subtle depth guide user input.
+            Focus states are prominent, ensuring users always know where their
+            attention is.
+          </p>
+          <div
+            style="
+              max-width: 500px;
+              margin: 0 auto;
+              display: flex;
+              flex-direction: column;
+              gap: 25px;
+            "
+          >
+            <div>
+              <label
+                for="username-input"
+                style="
+                  display: block;
+                  margin-bottom: 8px;
+                  font-family: var(--font-family-mono);
+                  font-weight: 700;
+                "
+                >Username</label
+              >
+              <input
+                type="text"
+                id="username-input"
+                class="input-field"
+                placeholder="Enter your username"
+              />
+            </div>
+            <div>
+              <label
+                for="email-input"
+                style="
+                  display: block;
+                  margin-bottom: 8px;
+                  font-family: var(--font-family-mono);
+                  font-weight: 700;
+                "
+                >Email Address</label
+              >
+              <input
+                type="email"
+                id="email-input"
+                class="input-field"
+                placeholder="your.email@example.com"
+              />
+            </div>
+            <div>
+              <label
+                for="service-select"
+                style="
+                  display: block;
+                  margin-bottom: 8px;
+                  font-family: var(--font-family-mono);
+                  font-weight: 700;
+                "
+                >Select Service Type</label
+              >
+              <select id="service-select" class="input-field">
+                <option value="">Choose an option...</option>
+                <option value="data">Data Analysis</option>
+                <option value="flow">Workflow Automation</option>
+                <option value="support">Customer Support</option>
+              </select>
+            </div>
+            <div>
+              <label
+                for="message-textarea"
+                style="
+                  display: block;
+                  margin-bottom: 8px;
+                  font-family: var(--font-family-mono);
+                  font-weight: 700;
+                "
+                >Your Message</label
+              >
+              <textarea
+                id="message-textarea"
+                class="input-field"
+                rows="4"
+                placeholder="Type your message here..."
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="component-showcase">
+          <h3 style="text-align: center; margin-bottom: 20px">
+            Dynamic Cards & Panels
+          </h3>
+          <p style="text-align: center; max-width: 700px; margin: 0 auto 30px">
+            Cards provide elegant content containers, utilizing glassmorphism
+            for depth and visual separation. They animate subtly on hover,
+            inviting interaction.
+          </p>
+          <div class="component-grid">
+            <div class="card">
+              <h4
+                style="margin-bottom: 15px; color: var(--color-primary-default)"
+              >
+                Fluid Workflow Management
+              </h4>
+              <p>
+                Experience seamless transitions between tasks and projects. Our
+                system intelligently adapts to your pace, reducing friction and
+                maximizing productivity.
+              </p>
+              <button class="btn btn-primary" style="margin-top: 20px">
+                Explore Workflows
+              </button>
+            </div>
+            <div class="card">
+              <h4
+                style="
+                  margin-bottom: 15px;
+                  color: var(--color-secondary-default);
+                "
+              >
+                Real-time Data Insights
+              </h4>
+              <p>
+                Gain immediate understanding of your data through intuitive
+                visualizations. Our platform transforms complex information into
+                actionable insights with ease.
+              </p>
+              <button class="btn btn-secondary" style="margin-top: 20px">
+                View Analytics
+              </button>
+            </div>
+            <div class="card">
+              <h4
+                style="margin-bottom: 15px; color: var(--color-primary-default)"
+              >
+                Secure & Scalable Infrastructure
+              </h4>
+              <p>
+                Built on robust, cloud-native architecture, Flowly ensures your
+                data is secure and your operations can scale without limits.
+                Focus on your growth.
+              </p>
+              <button class="btn btn-primary" style="margin-top: 20px">
+                Learn About Security
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="component-showcase">
+          <h3 style="text-align: center; margin-bottom: 20px">
+            Purposeful Iconography
+          </h3>
+          <p style="text-align: center; max-width: 700px; margin: 0 auto 30px">
+            Our icons are clear, universally understood, and designed to
+            seamlessly integrate with our streamlined aesthetic. They provide
+            quick visual cues for navigation and status.
+          </p>
+          <div class="icon-grid">
+            <div class="icon-box">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M3 18h18v-2H3v2zM3 13h18v-2H3v2zM3 6v2h18V6H3z" />
+              </svg>
+              <span>Menu</span>
+            </div>
+            <div class="icon-box">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+              </svg>
+              <span>Home</span>
+            </div>
+            <div class="icon-box">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path
+                  d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"
+                />
+              </svg>
+              <span>Analytics</span>
+            </div>
+            <div class="icon-box">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path
+                  d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2.09-3.61c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.39-1.07-.75-1.65-1.09L12.72 2.1c-.08-.21-.28-.35-.5-.35h-4c-.22 0-.42.14-.5.35L7.04 4.16c-.58.34-1.13.7-1.65 1.09l-2.49-1c-.22-.08-.49 0-.61.22L2.4 7.72c-.12.22-.07.49.12.64l2.11 1.65c-.04.32-.07.64-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2.09 3.61c.12.22.39.3.61.22l2.49-1c.52.39 1.07.75 1.65 1.09l.31 2.09c.08.21.28.35.5.35h4c.22 0 .42-.14.5-.35l.31-2.09c.58-.34 1.13-.7 1.65-1.09l2.49 1c.22.08.49 0 .61-.22l2.09-3.61c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"
+                />
+              </svg>
+              <span>Settings</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="component-showcase">
+          <h3 style="text-align: center; margin-bottom: 20px">
+            Impactful Imagery
+          </h3>
+          <p style="text-align: center; max-width: 700px; margin: 0 auto 30px">
+            Visual content reinforces Flowly's message. We select stock images
+            that convey movement, clarity, and the seamless integration of
+            technology with human endeavor.
+          </p>
+          <div class="image-gallery">
+            <div class="image-item">
+              <img
+                src="https://images.unsplash.com/photo-1543886576-9c4b7b6e92f2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1NzYxMjl8MHwxfHNlYXJjaHw3OXx8YWJzdHJhY3QlMjBmbG93JTIwZGF0YXxlbnwwfHx8fDE3MTcwNzYwMTd8MA&ixlib=rb-4.0.3&q=80&w=1080"
+                alt="Abstract flowing lines of data, conveying fluid motion"
+              />
+              <p style="text-align: center; margin-top: 10px">
+                Visualizing data flow and connectivity.
+              </p>
+            </div>
+            <div class="image-item">
+              <img
+                src="https://images.unsplash.com/photo-1531545511019-2479e0018f73?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1NzYxMjl8MHwxfHNlYXJjaHwxNXx8Y2FsbSUyMHByb2R1Y3RpdmUlMjB3b3Jrc3BhY2V8ZW58MHx8fHwxNzE3MDc2MTYwfDA&ixlib=rb-4.0.3&q=80&w=1080"
+                alt="Minimalist workspace, serene and conducive to focus"
+              />
+              <p style="text-align: center; margin-top: 10px">
+                Reflecting a focused, productive workflow.
+              </p>
+            </div>
+            <div class="image-item">
+              <img
+                src="https://images.unsplash.com/photo-1582213197607-e81878d6b8b8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1NzYxMjl8MHwxfHNlYXJjaHwyMHx8aHVtYW4lMjB0ZWNoJTIwaW50ZXJhY3Rpb258ZW58MHx8fHwxNzE3MDc2MjI0fDA&ixlib=rb-4.0.3&q=80&w=1080"
+                alt="Hands interacting with a transparent digital interface"
+              />
+              <p style="text-align: center; margin-top: 10px">
+                Seamless interaction with technology.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer
+        style="
+          text-align: center;
+          padding-top: 50px;
+          padding-bottom: 20px;
+          font-size: 0.9em;
+          color: var(--color-text-light);
+          transition: color 0.6s ease-in-out;
+        "
+      >
+        <p>
+          &copy; 2025 Flowly. All rights reserved. Designed for fluidity and
+          intuitive experiences.
+        </p>
+        <p>Crafted with passion by the Flowly Design & Marketing Team.</p>
+      </footer>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const themeToggle = document.getElementById("themeToggle");
+        const htmlElement = document.documentElement;
+        const moonIcon = themeToggle.querySelector(".moon-icon");
+        const sunIcon = themeToggle.querySelector(".sun-icon");
+
+        // Set initial theme based on localStorage or default to light
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme === "dark") {
+          htmlElement.classList.add("dark");
+          moonIcon.classList.add("hidden");
+          sunIcon.classList.remove("hidden");
+        } else {
+          htmlElement.classList.remove("dark");
+          moonIcon.classList.remove("hidden");
+          sunIcon.classList.add("hidden");
+        }
+
+        themeToggle.addEventListener("click", () => {
+          if (htmlElement.classList.contains("light")) {
+            htmlElement.classList.remove("light");
+            htmlElement.classList.add("dark");
+            localStorage.setItem("theme", "dark");
+          } else {
+            htmlElement.classList.remove("dark");
+            htmlElement.classList.add("light");
+            localStorage.setItem("theme", "light");
+          }
+          updateThemeToggleIcon();
+        });
+
+        function updateThemeToggleIcon() {
+          if (htmlElement.classList.contains("dark")) {
+            moonIcon.classList.add("hidden");
+            sunIcon.classList.remove("hidden");
+          } else {
+            moonIcon.classList.remove("hidden");
+            sunIcon.classList.add("hidden");
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

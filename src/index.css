@@ -1,0 +1,136 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global styles for a glassmorphic, neon, tech-forward look */
+body {
+  @apply font-sans text-text-base bg-background-base transition-all-ease duration-smooth;
+  /* Subtle gradient for depth, optimized for performance */
+  background: radial-gradient(
+      circle at 10% 90%,
+      rgba(0, 221, 235, 0.3) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(255, 0, 255, 0.3) 0%,
+      transparent 50%
+    ),
+    theme("colors.background.base");
+  -webkit-backdrop-filter: blur(4px); /* Safari support */
+  backdrop-filter: blur(4px);
+}
+
+.dark body {
+  @apply text-text-light;
+  background: radial-gradient(
+      circle at 10% 90%,
+      rgba(0, 163, 175, 0.4) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(75, 0, 130, 0.4) 0%,
+      transparent 50%
+    ),
+    theme("colors.background.dark");
+  -webkit-backdrop-filter: blur(4px); /* Safari support */
+  backdrop-filter: blur(4px);
+}
+
+/* Enhanced scrollbar: accessible, neon, and sleek */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-background-light rounded-lg;
+}
+
+.dark ::-webkit-scrollbar-track {
+  @apply bg-background-dark;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-primary-light rounded-lg border-2 border-background-light;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  @apply bg-primary-dark border-background-dark;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-primary;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  @apply bg-primary;
+}
+
+::-webkit-scrollbar-thumb:focus {
+  outline: 2px solid theme("colors.secondary.light");
+  outline-offset: -2px;
+}
+
+/* Base container with glassmorphic style */
+.container-base {
+  @apply bg-background-base dark:bg-background-dark shadow-glass-light dark:shadow-glass-dark rounded-xl p-4 sm:p-6 border border-opacity-20 border-primary-light;
+}
+
+/* Smooth, frictionless animations */
+.fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.fade-out {
+  animation: fadeOut 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+}
+
+/* Responsive swipe actions for mobile */
+.swipe-container {
+  @apply overflow-hidden relative;
+}
+
+.swipe-content {
+  @apply transition-transform duration-fast ease-out;
+}
+
+.swipe-actions {
+  @apply absolute top-0 right-0 h-full flex items-center justify-end pr-4;
+  background: theme("colors.danger");
+  width: 30vw; /* Responsive width, scales with viewport */
+  max-width: 120px; /* Cap for larger screens */
+  transform: translateX(100%); /* Hidden by default */
+}
+
+.swipe-left .swipe-actions {
+  @apply translate-x-0;
+}
+
+.swipe-left .swipe-content {
+  transform: translateX(calc(-1 * 30vw)); /* Dynamic, responsive shift */
+  max-width: -120px; /* Matches max-width cap */
+}
