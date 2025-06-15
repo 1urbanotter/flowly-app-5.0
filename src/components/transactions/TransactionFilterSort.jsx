@@ -6,15 +6,9 @@ import Button from "../common/Button";
 const TransactionFilterSort = ({
   filters,
   setFilters,
-  accounts,
   onApplyFilters,
   onClearFilters,
 }) => {
-  const accountOptions = accounts.map((account) => ({
-    value: account.id,
-    label: account.name,
-  }));
-
   const transactionTypeOptions = [
     { value: "", label: "All Types" },
     { value: "Sale", label: "Sale" },
@@ -23,11 +17,18 @@ const TransactionFilterSort = ({
     { value: "Gift", label: "Gift" },
   ];
 
+  const dateRangeOptions = [
+    { value: "", label: "All Time" },
+    { value: "7", label: "Last 7 Days" },
+    { value: "30", label: "Last 30 Days" },
+    { value: "90", label: "Last 90 Days" },
+  ];
+
   const sortOptions = [
-    { value: "dateDesc", label: "Date (Newest First)" },
-    { value: "dateAsc", label: "Date (Oldest First)" },
-    { value: "amountDesc", label: "Amount (High to Low)" },
-    { value: "amountAsc", label: "Amount (Low to High)" },
+    { value: "dateDesc", label: "Newest First" },
+    { value: "dateAsc", label: "Oldest First" },
+    { value: "amountDesc", label: "Amount High to Low" },
+    { value: "amountAsc", label: "Amount Low to High" },
   ];
 
   const handleChange = (e) => {
@@ -36,60 +37,56 @@ const TransactionFilterSort = ({
   };
 
   return (
-    <div className="container-base p-4 mb-6">
-      <h3 className="text-lg font-semibold mb-4 text-text-DEFAULT dark:text-text-darker">
-        Filter & Sort Transactions
+    <div className="space-y-3">
+      <h3 className="text-lg font-semibold text-text-base dark:text-text-light font-mono">
+        Filter & Sort
       </h3>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <InputField
-          label="Search by Customer/Vendor/Notes"
-          id="searchTerm"
-          value={filters.searchTerm}
-          onChange={handleChange}
-          placeholder="e.g., John Doe, rent"
-        />
-        <SelectField
-          label="Account"
-          id="accountId"
-          value={filters.accountId}
-          onChange={handleChange}
-          options={[{ value: "", label: "All Accounts" }, ...accountOptions]}
-        />
-        <SelectField
-          label="Type"
-          id="type"
-          value={filters.type}
-          onChange={handleChange}
-          options={transactionTypeOptions}
-        />
-        <InputField
-          label="Start Date"
-          id="startDate"
-          type="date"
-          value={filters.startDate}
-          onChange={handleChange}
-        />
-        <InputField
-          label="End Date"
-          id="endDate"
-          type="date"
-          value={filters.endDate}
-          onChange={handleChange}
-        />
-        <SelectField
-          label="Sort By"
-          id="sortBy"
-          value={filters.sortBy}
-          onChange={handleChange}
-          options={sortOptions}
-        />
-      </div>
-      <div className="flex justify-end space-x-3 mt-4">
-        <Button onClick={onClearFilters} variant="outline">
-          Clear Filters
+      <InputField
+        label="Search"
+        id="searchTerm"
+        value={filters.searchTerm}
+        onChange={handleChange}
+        placeholder="Customer, Vendor, Notes"
+        className="w-full"
+      />
+      <SelectField
+        label="Type"
+        id="type"
+        value={filters.type}
+        onChange={handleChange}
+        options={transactionTypeOptions}
+        className="w-full"
+      />
+      <SelectField
+        label="Date Range"
+        id="dateRange"
+        value={filters.dateRange}
+        onChange={handleChange}
+        options={dateRangeOptions}
+        className="w-full"
+      />
+      <SelectField
+        label="Sort By"
+        id="sortBy"
+        value={filters.sortBy}
+        onChange={handleChange}
+        options={sortOptions}
+        className="w-full"
+      />
+      <div className="flex justify-end space-x-2 mt-4">
+        <Button
+          onClick={onClearFilters}
+          variant="outline"
+          className="text-text-base dark:text-text-light border-primary-light dark:border-secondary-light hover:bg-primary-light/20 dark:hover:bg-secondary-light/20 text-sm py-1 px-2"
+        >
+          Clear
         </Button>
-        <Button onClick={onApplyFilters} variant="primary">
-          Apply Filters
+        <Button
+          onClick={onApplyFilters}
+          variant="primary"
+          className="bg-primary-light dark:bg-primary-light text-text-light hover:bg-primary dark:hover:bg-primary-dark text-sm py-1 px-2"
+        >
+          Apply
         </Button>
       </div>
     </div>

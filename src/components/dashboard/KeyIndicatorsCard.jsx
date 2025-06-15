@@ -2,6 +2,7 @@ import React from "react";
 import { useData } from "../../context/DataContext";
 import { formatCurrency } from "../../utils/helpers";
 import Spinner from "../common/Spinner";
+import GlassCard from "../common/GlassCard";
 import { MdAttachMoney, MdStorage } from "react-icons/md";
 
 const KeyIndicatorsCard = () => {
@@ -11,32 +12,36 @@ const KeyIndicatorsCard = () => {
 
   if (loading) {
     return (
-      <div className="bg-background-base/30 dark:bg-background-dark/30 p-4 rounded-lg shadow-glass-light dark:shadow-glass-dark flex flex-col justify-center items-center py-6 text-center backdrop-blur-md border border-primary-light/10">
+      <GlassCard className="flex flex-col justify-center items-center py-6">
         <Spinner size="md" color="primary" />
-        <span className="mt-3 text-base font-sans text-text-base dark:text-text-light opacity-75">
+        <span className="mt-3 text-text-base dark:text-text-light">
           Loading key indicators...
         </span>
-      </div>
+      </GlassCard>
     );
   }
 
   const StatItem = ({ icon, title, value, description }) => (
-    <div className="bg-background-base/30 dark:bg-background-dark/30 p-4 rounded-lg shadow-glass-light dark:shadow-glass-dark backdrop-blur-md border border-primary-light/10 flex items-center">
-      <div className="mr-3 p-2 rounded-md bg-primary-light/20 flex items-center justify-center">
+    <GlassCard className="flex items-center">
+      <div className="mr-3 p-2 rounded-md bg-primary-light/20 dark:bg-secondary-light/20">
         {React.cloneElement(icon, {
-          className: "h-8 w-8 text-primary-light",
+          className: "h-6 w-6 text-primary-light dark:text-secondary-light",
         })}
       </div>
       <div className="flex-grow">
-        <p className="text-xl border-b-2 border-primary-light pb-2 mb-2 font-bold text-text-base">
+        <p className="text-lg font-semibold text-text-base dark:text-text-light font-mono">
           {title}
         </p>
-        <p className="text-3xl font-mono text-primary-light">{value}</p>
+        <p className="text-xl font-mono text-primary-light dark:text-secondary-light">
+          {value}
+        </p>
         {description && (
-          <p className="text-md text-text-dark mt-1">{description}</p>
+          <p className="text-sm text-text-base dark:text-text-dark mt-1">
+            {description}
+          </p>
         )}
       </div>
-    </div>
+    </GlassCard>
   );
 
   return (
@@ -45,7 +50,7 @@ const KeyIndicatorsCard = () => {
         icon={<MdAttachMoney />}
         title={`Value per ${unitLabel}`}
         value={`${formatCurrency(dollarsToUnitsRatio)} / ${unitLabel}`}
-        description="Average revenue generated per unit"
+        description="Average revenue per unit"
       />
       <StatItem
         icon={<MdStorage />}

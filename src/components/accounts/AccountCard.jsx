@@ -19,17 +19,17 @@ const AccountCard = ({
           )}`}
         ></div>
         <div>
-          <h3 className="text-lg font-semibold text-text-base dark:text-text-dark">
+          <h3 className="text-2xl font-mono font-semibold text-secondary-light dark:text-primary-light mb-2 border-b-2 border-primary/30">
             {" "}
             {account.name}{" "}
             {isDefault && (
-              <span className="text-xs text-primary-DEFAULT">(Default)</span>
+              <span className="text-xs text-primary">(Default)</span>
             )}
           </h3>
-          <p className="text-sm text-text-light dark:text-text-darker">
+          <p className="text-xl text-text-light dark:text-text-base">
             {" "}
             Balance:{" "}
-            <span className="font-bold text-primary-DEFAULT">
+            <span className="font-bold text-success">
               {" "}
               {formatCurrency(account.balance || 0)}
             </span>
@@ -48,19 +48,19 @@ const AccountCard = ({
         )}
         <Button
           onClick={() => onEdit(account)}
-          variant="primary"
+          variant="secondary"
           className="text-sm" // Retain text-sm
         >
-          <MdEdit size={18} />{" "}
-          <span className="ml-1 hidden sm:inline">Edit</span>
+          <MdEdit size={18} />
+          <span className="ml-1 sm:inline">Edit</span>
         </Button>
         <Button
           onClick={() => onDelete(account.id)}
-          variant="danger"
+          variant="outline"
           className="text-sm" // Retain text-sm
         >
-          <MdDelete size={18} />{" "}
-          <span className="ml-1 hidden sm:inline">Delete</span>
+          <MdDelete size={30} />
+          <span className="mx-2 sm:inline">Delete</span>
         </Button>
       </div>
     </div>

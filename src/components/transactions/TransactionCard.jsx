@@ -1,103 +1,95 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   formatDate,
   formatCurrency,
   getMoneyFlowColor,
   getAccountColorClass,
 } from "../../utils/helpers";
-import { MdDelete, MdEdit } from "react-icons/md";
+import { MdEdit, MdDelete } from "react-icons/md";
 import Button from "../common/Button";
+import GlassCard from "../common/GlassCard";
 
-const TransactionCard = ({ transaction, onEdit, onDelete, unitLabel }) => {
-  const [isSwiped, setIsSwiped] = useState(false);
-  const [startX, setStartX] = useState(0);
-
-  const handleTouchStart = (e) => {
-    setStartX(e.touches[0].clientX);
-  };
-
-  const handleTouchMove = (e) => {
-    const currentX = e.touches[0].clientX;
-    const diffX = startX - currentX;
-
-    if (diffX > 50) {
-      setIsSwiped(true);
-    } else if (diffX < -50) {
-      setIsSwiped(false);
-    }
-  };
-
-  const handleTouchEnd = () => {
-    // Optionally snap back if not enough swipe or apply a small delay
-  };
-
+const TransactionCard = ({
+  transaction,
+  onEdit,
+  onDelete,
+  onView,
+  unitLabel,
+}) => {
   const moneyValue = transaction.moneyIn || -transaction.moneyOut;
   const moneyDisplay = transaction.moneyIn
     ? formatCurrency(transaction.moneyIn)
     : formatCurrency(transaction.moneyOut);
 
   return (
-    <div
-      className={`bg-background-base dark:bg-background-darker p-4 rounded-lg shadow-custom-light dark:shadow-custom-dark relative swipe-container overflow-hidden mb-3 ${
-        isSwiped ? "swipe-left" : ""
+    <GlassCard
+      className="relative cursor-pointer hover:bg-primary-light/10 dark:hover:bg-secondary-light/10 transition-all-ease duration-fast"
+      onClick={onView}
+      role="article"
+      aria-label={`Transaction with ${
+        transaction.customerVendor || transaction.type
       }`}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
     >
-      <div className="swipe-content flex justify-between items-center">
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center">
-            <div className="mr-3 p-2 rounded-md bg-primary-light dark:bg-secondary-dark flex items-center justify-center">
-              <span
-                className={`h-8 w-8 rounded-full ${getAccountColorClass(
-                  transaction.accountColor
-                )}`}
-              ></span>
-            </div>
-            <div className="flex-grow">
-              <p className="text-xl border-b-2 border-primary dark:border-secondary-dark pb-2 mb-2 font-bold text-text-darker dark:text-text-light">
-                {transaction.customerVendor || `No ${transaction.type} info`}
+      <div className="flex justify-between items-center p-4">
+        <div className="flex-1 min-w-0 flex items-center">
+          <div className="mr-3 p-2 rounded-md bg-primary-light/20">
+            <span
+              className={`h-6 w-6 rounded-full ${getAccountColorClass(
+                transaction.accountColor
+              )}`}
+            />
+          </div>
+          <div className="flex-grow">
+            <p className="text-xl font-semibold text-secondary-light dark:text-primary-light font-mono truncate">
+              {transaction.customerVendor || `No ${transaction.type} info`}
+            </p>
+            <p className="text-sm text-text-light dark:text-text-base">
+              {formatDate(transaction.date)}
+              {(transaction.units || transaction.units === 0) &&
+                ` | ${transaction.units} ${unitLabel}`}
+            </p>
+            {transaction.notes && (
+              <p className="text-sm text-text-base dark:text-text-light mt-1 truncate">
+                {transaction.notes}
               </p>
-              <p className="text-md text-text-darker dark:text-text-light mt-1">
-                {formatDate(transaction.date)}
-                {(transaction.units || transaction.units === 0) &&
-                  ` | ${transaction.units} ${unitLabel}`}
-              </p>
-              {transaction.notes && (
-                <p className="text-md text-text-darker dark:text-text-light mt-1">
-                  {transaction.notes}
-                </p>
-              )}
-            </div>
+            )}
           </div>
         </div>
-        <div className="text-right">
-          <p className="text-2xl font-mono text-primary dark:text-primary-light">
+        <div className="flex items-center space-x-2">
+          <p
+            className={`text-2xl font-mono ${getMoneyFlowColor(
+              moneyValue
+            )} text-right min-w-[100px]`}
+          >
             {moneyValue > 0 ? "+" : "-"} {moneyDisplay}
           </p>
+          <div className="flex flex-col space-y-1">
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit();
+              }}
+              variant="ghost"
+              size="sm"
+              aria-label="Edit transaction"
+            >
+              <MdEdit className="h-5 w-5 text-primary-light" />
+            </Button>
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete();
+              }}
+              variant="ghost"
+              size="sm"
+              aria-label="Delete transaction"
+            >
+              <MdDelete className="h-5 w-5 text-danger" />
+            </Button>
+          </div>
         </div>
       </div>
-
-      <div className="swipe-actions">
-        <Button
-          onClick={() => onEdit(transaction)}
-          variant="primary"
-          className="mr-3 p-2 rounded-md bg-primary-light dark:bg-secondary-dark"
-          aria-label="Edit transaction"
-        >
-          <MdEdit className="h-8 w-8 text-primary-dark dark:text-primary-dark" />
-        </Button>
-        <Button
-          onClick={() => onDelete(transaction.id)}
-          variant="danger"
-          className="p-2 rounded-md bg-primary-light dark:bg-secondary-dark"
-          aria-label="Delete transaction"
-        >
-          <MdDelete className="h-8 w-8 text-primary-dark dark:text-primary-dark" />
-        </Button>
-      </div>
-    </div>
+    </GlassCard>
   );
 };
 

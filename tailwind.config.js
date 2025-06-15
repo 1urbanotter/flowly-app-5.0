@@ -6,18 +6,18 @@ export default {
     extend: {
       fontFamily: {
         sans: ["Roboto", "sans-serif"],
-        mono: ["Roboto+Mono", "monospace"],
+        mono: ["Overpass Mono", "monospace"],
       },
       colors: {
         primary: {
           light: "#00DDEB", // Neon cyan for accents
-          DEFAULT: "#00A3AF", // Muted cyan for buttons, borders
+          DEFAULT: "#17BEC4", // Muted cyan for buttons, borders
           dark: "#0F172A", // Dark slate for backgrounds
         },
         secondary: {
-          light: "#FF99FF", // Neon magenta for highlights
-          DEFAULT: "#CC00CC", // Muted magenta for contrast
-          dark: "#4B0082", // Deep indigo for dark mode
+          light: "#F7F772", // Neon magenta for highlights
+          DEFAULT: "#BDB42F", // Muted magenta for contrast
+          dark: "#826739", // Deep indigo for dark mode
         },
         background: {
           light: "rgba(203, 213, 225, 0.85)", // Frosted light for glassmorphism
@@ -26,13 +26,13 @@ export default {
         },
         text: {
           light: "#F1F5F9", // High-contrast white for readability
-          base: "#CBD5E1", // Light slate for body text
-          dark: "#64748B", // Muted slate for secondary text
+          base: "#DADCDF", // Light slate for body text
+          dark: "#1F252E", // Muted slate for secondary text
           darker: "#1B2021", // Near-black for emphasis
         },
-        success: "#88FFC5", // Vibrant green, retained
-        danger: "#FF6B6B", // Soft neon red for errors
-        warning: "#F4A261", // Warm orange for warnings
+        success: "#96DF7D", // Vibrant green, retained
+        danger: "#ED3A3A", // Soft neon red for errors
+        warning: "#F0A351", // Warm orange for warnings
       },
       spacing: {
         xs: "0.25rem",

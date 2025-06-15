@@ -11,7 +11,7 @@ const AddTransactionModal = ({ isOpen, onClose, transactionToEdit }) => {
   const unitLabel = settings?.unitLabel || "units";
 
   const initialFormState = {
-    date: new Date().toISOString().split("T")[0], // YYYY-MM-DD
+    date: new Date().toISOString().split("T")[0],
     type: "Sale",
     customerVendor: "",
     accountId: "",
@@ -39,20 +39,17 @@ const AddTransactionModal = ({ isOpen, onClose, transactionToEdit }) => {
         notes: transactionToEdit.notes || "",
       });
     } else {
-      setForm(initialFormState); // Reset form when modal opens for new transaction
+      setForm(initialFormState);
       if (settings?.defaultAccountId) {
         setForm((prev) => ({ ...prev, accountId: settings.defaultAccountId }));
       }
     }
-    setErrors({}); // Clear errors on modal open/edit
+    setErrors({});
   }, [isOpen, transactionToEdit, accounts, settings]);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
-    setForm((prevForm) => ({
-      ...prevForm,
-      [id]: value,
-    }));
+    setForm((prevForm) => ({ ...prevForm, [id]: value }));
   };
 
   const validate = () => {
@@ -103,17 +100,14 @@ const AddTransactionModal = ({ isOpen, onClose, transactionToEdit }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validate()) {
-      return;
-    }
+    if (!validate()) return;
 
-    // Convert money and units to numbers
     const processedForm = {
       ...form,
       moneyIn: form.moneyIn === "" ? 0 : parseFloat(form.moneyIn),
       moneyOut: form.moneyOut === "" ? 0 : parseFloat(form.moneyOut),
       units: form.units === "" ? 0 : parseFloat(form.units),
-      date: new Date(form.date), // Convert date string back to Date object
+      date: new Date(form.date),
     };
 
     let success = false;
@@ -125,7 +119,7 @@ const AddTransactionModal = ({ isOpen, onClose, transactionToEdit }) => {
 
     if (success) {
       onClose();
-      setForm(initialFormState); // Reset form after successful submission
+      setForm(initialFormState);
     }
   };
 
@@ -175,7 +169,7 @@ const AddTransactionModal = ({ isOpen, onClose, transactionToEdit }) => {
           id="customerVendor"
           value={form.customerVendor}
           onChange={handleChange}
-          placeholder="e.g., John Doe / Supplier XYZ"
+          placeholder="Name"
         />
         <SelectField
           label="Account"
@@ -190,15 +184,15 @@ const AddTransactionModal = ({ isOpen, onClose, transactionToEdit }) => {
           error={errors.accountId}
           placeholder="Select an account"
         />
-
         {showMoneyIn && (
           <InputField
             label="Money In"
             id="moneyIn"
-            type="number"
+            type="currency"
+            currency="USD"
             value={form.moneyIn}
             onChange={handleChange}
-            placeholder="0.00"
+            placeholder="$0.00"
             step="0.01"
             error={errors.moneyIn}
           />
@@ -207,10 +201,11 @@ const AddTransactionModal = ({ isOpen, onClose, transactionToEdit }) => {
           <InputField
             label="Money Out"
             id="moneyOut"
-            type="number"
+            type="currency"
+            currency="USD"
             value={form.moneyOut}
             onChange={handleChange}
-            placeholder="0.00"
+            placeholder="$0.00"
             step="0.01"
             error={errors.moneyOut}
           />
@@ -222,7 +217,7 @@ const AddTransactionModal = ({ isOpen, onClose, transactionToEdit }) => {
             type="number"
             value={form.units}
             onChange={handleChange}
-            placeholder={`e.g., 10 ${unitLabel}`}
+            placeholder={`# of ${unitLabel}`}
             step="any"
             error={errors.units}
           />
@@ -230,13 +225,12 @@ const AddTransactionModal = ({ isOpen, onClose, transactionToEdit }) => {
         <InputField
           label="Notes"
           id="notes"
-          type="textarea" // Not a real type but useful for semantic styling
+          type="textarea"
           value={form.notes}
           onChange={handleChange}
-          placeholder="Optional notes about the transaction..."
+          placeholder="Optional"
           className="min-h-[80px] max-h-[150px]"
         />
-
         <div className="flex justify-end space-x-3 mt-6">
           <Button
             type="button"
@@ -246,7 +240,7 @@ const AddTransactionModal = ({ isOpen, onClose, transactionToEdit }) => {
           >
             Cancel
           </Button>
-          <Button type="submit" variant="primary" disabled={loading}>
+          <Button type="submit" variant="secondary" disabled={loading}>
             {loading
               ? "Saving..."
               : transactionToEdit

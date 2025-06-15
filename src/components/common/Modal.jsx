@@ -49,7 +49,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-background-dark/70 backdrop-blur-sm transition-all-ease duration-smooth fade-in"
+      className="fixed w-full inset-0 z-50 flex items-center justify-center bg-background-dark/70 backdrop-blur-sm transition-all-ease duration-smooth fade-in"
       onClick={handleOverlayClick}
     >
       <div
@@ -58,12 +58,12 @@ const Modal = ({ isOpen, onClose, title, children }) => {
         aria-modal="true"
         aria-labelledby="modal-title"
         tabIndex={-1}
-        className="bg-background-base dark:bg-background-dark border border-primary-light/20 rounded-xl shadow-glass-light dark:shadow-glass-dark p-6 w-11/12 max-w-lg transform transition-all-ease duration-smooth text-text-base font-sans"
+        className="h-3/6 overflow-y-auto bg-background-base dark:bg-background-dark border border-primary-light/20 rounded-xl shadow-glass-light dark:shadow-glass-dark p-10 w-11/12 max-w-xl transform transition-all-ease duration-smooth text-text-base font-sans"
       >
-        <div className="flex justify-between items-center mb-6 pb-4 border-b border-primary-light/20">
+        <div className="flex justify-between items-center mb-4 pb-4 border-b border-primary-light/50">
           <h2
             id="modal-title"
-            className="text-2xl font-semibold text-primary-light font-mono"
+            className="text-3xl font-semibold text-primary-light font-mono"
           >
             {title}
           </h2>

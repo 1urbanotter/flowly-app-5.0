@@ -4,17 +4,17 @@
 
 /* Global styles for a glassmorphic, neon, tech-forward look */
 body {
-  @apply font-sans text-text-base bg-background-base transition-all-ease duration-smooth;
+  @apply text-text-base bg-background-base transition-all-ease duration-smooth;
   /* Subtle gradient for depth, optimized for performance */
   background: radial-gradient(
       circle at 10% 90%,
-      rgba(0, 221, 235, 0.3) 0%,
-      transparent 50%
+      rgba(19, 233, 249, 0.904) 0%,
+      transparent 70%
     ),
     radial-gradient(
       circle at 90% 10%,
-      rgba(255, 0, 255, 0.3) 0%,
-      transparent 50%
+      rgba(235, 247, 159, 0.938) 0%,
+      transparent 70%
     ),
     theme("colors.background.base");
   -webkit-backdrop-filter: blur(4px); /* Safari support */
@@ -25,13 +25,13 @@ body {
   @apply text-text-light;
   background: radial-gradient(
       circle at 10% 90%,
-      rgba(0, 163, 175, 0.4) 0%,
-      transparent 50%
+      rgba(15, 210, 224, 0.632) 0%,
+      transparent 70%
     ),
     radial-gradient(
       circle at 90% 10%,
-      rgba(75, 0, 130, 0.4) 0%,
-      transparent 50%
+      rgba(177, 177, 22, 0.582) 0%,
+      transparent 70%
     ),
     theme("colors.background.dark");
   -webkit-backdrop-filter: blur(4px); /* Safari support */

@@ -7,33 +7,41 @@ const Button = ({
   variant = "primary",
   className = "",
   disabled = false,
+  size = "lg",
 }) => {
   const baseStyles =
-    "py-4 px-6 rounded-xl text-base text-lg font-semibold font-mono focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-200 ease-out"; // Adjusted padding, rounded, font-size, and focus ring basics
+    "relative flex items-center justify-center rounded-lg font-bold font-mono transition-all duration-300 ease-in-out transform focus:outline-none focus:ring-4";
+
+  const sizeStyles = {
+    sm: "py-2 px-4 text-sm",
+    md: "py-3 px-6 text-base",
+    lg: "py-4 px-8 text-lg",
+  };
 
   const variantStyles = {
     primary:
-      "bg-primary text-text-light dark:text-text-dark hover:bg-primary-dark focus:ring-primary-light focus:ring-opacity-60", // Corrected text color and focus ring
+      "bg-primary-light text-black shadow-lg shadow-primary-light/50 hover:bg-primary-light/10 hover:text-white focus:ring-teal-300",
     secondary:
-      "bg-secondary text-white hover:bg-secondary-dark focus:ring-secondary-light focus:ring-opacity-60", // Corrected focus ring
+      "bg-secondary-light text-black shadow-lg shadow-yellow-400/50 hover:bg-yellow-300 focus:ring-yellow-200",
     outline:
-      "bg-transparent border-4 border-text-light npmdark:border-primary-light text-text-light dark:text-primary-light hover:bg-primary dark:hover:bg-primary-light hover:text-black dark:hover:text-black focus:ring-primary-light focus:ring-opacity-60 focus:bg-primary-light dark:focus:bg-primary-dark",
+      "bg-transparent border-2 border-primary text-primary-light hover:bg-primary-light/50 hover:text-white focus:ring-teal-300",
     danger:
-      "bg-danger text-text-base dark:text-text-dark hover:opacity-80 focus:ring-danger focus:ring-opacity-60", // Adjusted text color, using opacity for hover for now, added focus ring
+      "bg-red-600 text-white shadow-lg shadow-red-600/50 hover:bg-red-500 focus:ring-red-400",
     ghost:
-      "bg-transparent text-text-light dark:text-text-base hover:bg-background-base dark:hover:bg-background-dark focus:ring-primary-light focus:ring-opacity-60", // Adjusted text colors, hover background, and focus ring
+      "bg-transparent text-teal-400 hover:bg-teal-500/20 focus:ring-teal-300",
   };
 
-  const disabledStyles = "opacity-50 cursor-not-allowed";
+  const disabledStyles = "opacity-40 cursor-not-allowed pointer-events-none";
 
   return (
     <button
       type={type}
       onClick={onClick}
-      className={`${baseStyles} ${variantStyles[variant]} ${
+      className={`${baseStyles} ${sizeStyles[size]} ${variantStyles[variant]} ${
         disabled ? disabledStyles : ""
       } ${className}`}
       disabled={disabled}
+      aria-disabled={disabled}
     >
       {children}
     </button>

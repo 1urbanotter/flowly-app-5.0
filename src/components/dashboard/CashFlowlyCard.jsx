@@ -1,8 +1,9 @@
 import React from "react";
 import { useData } from "../../context/DataContext";
-import { formatCurrency, getMoneyFlowColor } from "../../utils/helpers";
+import { formatCurrency } from "../../utils/helpers";
 import Spinner from "../common/Spinner";
-import { PiFlowArrowBold } from "react-icons/pi";
+import GlassCard from "../common/GlassCard";
+import { PiAlienFill } from "react-icons/pi";
 
 const CashFlowlyCard = () => {
   const {
@@ -15,12 +16,12 @@ const CashFlowlyCard = () => {
 
   if (loading) {
     return (
-      <div className="flex flex-col justify-center items-center py-6 text-center">
+      <GlassCard className="flex flex-col justify-center items-center py-6">
         <Spinner size="md" color="primary" />
-        <span className="mt-3 text-sm font-inter text-text-base dark:text-text-dark opacity-75">
+        <span className="mt-3 text-text-base dark:text-text-light">
           Loading cash flow...
         </span>
-      </div>
+      </GlassCard>
     );
   }
 
@@ -32,19 +33,19 @@ const CashFlowlyCard = () => {
   ];
 
   const FlowItem = ({ label, value }) => (
-    <div className="bg-background-base dark:bg-background-darker p-4 rounded-lg shadow-custom-light dark:shadow-custom-dark flex items-center">
-      <div className="mr-3 p-2 rounded-md bg-primary-light dark:bg-secondary-dark flex items-center justify-center">
-        <PiFlowArrowBold className="h-8 w-8 text-primary-dark dark:text-primary-dark" />
+    <GlassCard className="flex items-center">
+      <div className="mr-3 p-2 rounded-md bg-primary-light/20 dark:bg-secondary-light/20">
+        <PiAlienFill className="h-6 w-6 text-primary-light dark:text-secondary-light" />
       </div>
       <div className="flex-grow">
-        <p className="text-xl border-b-2 border-primary dark:border-secondary-dark pb-2 mb-2 font-bold text-text-darker dark:text-text-light">
+        <p className="text-lg font-semibold text-text-base dark:text-text-light font-mono">
           {label} Flow
         </p>
-        <p className="text-2xl font-mono text-primary dark:text-primary-light">
+        <p className="text-xl font-mono text-primary-light dark:text-secondary-light">
           {formatCurrency(value)}
         </p>
       </div>
-    </div>
+    </GlassCard>
   );
 
   return (
